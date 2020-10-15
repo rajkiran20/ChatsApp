@@ -5,4 +5,7 @@
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="chat_bubble_margin">100dp</dimen>
+    <dimen name="chat_bubble_top_margin">4dp</dimen>
+    <dimen name="chat_bubble_radius">10dp</dimen>
 </resources>

@@ -1,30 +1,35 @@
 package app.le.chatsapp
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.widget.Toast
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import app.le.chatsapp.ui.main.ChatFragment
+import app.le.chatsapp.ui.main.Message
+import app.le.chatsapp.ui.main.MessageReceiver
 import app.le.chatsapp.ui.main.SectionsPagerAdapter
 
-class MainActivity : AppCompatActivity() {
+const val FRAGMENT_ME = ":0"
+const val FRAGMENT_YOU = ":1"
+
+class MainActivity : AppCompatActivity(), MessageReceiver {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, this)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
+    }
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+    override fun onMessageReceived(message: Message) {
+        receiverFragment(message.textTo).pushMessage(message)
+    }
+
+    private fun receiverFragment(textTo: String): ChatFragment {
+        return supportFragmentManager.fragments[if(textTo.endsWith(FRAGMENT_ME)) 0 else 1] as ChatFragment
     }
 }
